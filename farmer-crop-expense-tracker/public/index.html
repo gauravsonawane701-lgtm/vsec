@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple crop, farm expense and profit/loss tracker for farmers.">
+  <title>Kisan Crop Diary | Farmer Crop & Expense Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Kisan Crop Diary home">
+      <span class="brand-mark" aria-hidden="true">🌱</span>
+      <span><strong>Kisan Crop Diary</strong><small>Simple records for every season</small></span>
+    </a>
+    <div class="topbar-note"><span class="online-dot"></span> Local farm record book</div>
+  </header>
+
+  <main id="top" class="page-wrap">
+    <section class="welcome-row">
+      <div>
+        <p class="eyebrow">FARM MANAGEMENT, MADE SIMPLE</p>
+        <h1>Know your crop.<br><span>Know your earnings.</span></h1>
+        <p class="welcome-copy">Record sowing details, track daily farming expenses, and check the profit or loss when a season ends.</p>
+      </div>
+      <div class="welcome-art" aria-hidden="true"><span>🌾</span><span>🌿</span><span>🌱</span></div>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+
+    <section class="stats-grid" aria-label="Farm summary">
+      <article class="stat-card"><div class="stat-icon crops-icon">🌱</div><div><p>Crops Recorded</p><strong id="stat-crops">0</strong><small>All seasons</small></div></article>
+      <article class="stat-card"><div class="stat-icon cost-icon">🧾</div><div><p>Total Expenses</p><strong id="stat-expenses">₹0</strong><small>All crop costs</small></div></article>
+      <article class="stat-card"><div class="stat-icon income-icon">🪙</div><div><p>Sales Income</p><strong id="stat-income">₹0</strong><small>Completed seasons</small></div></article>
+      <article class="stat-card"><div class="stat-icon result-icon">📈</div><div><p>Realized Profit / Loss</p><strong id="stat-profit">₹0</strong><small>Completed seasons only</small></div></article>
+    </section>
+
+    <section class="forms-grid" aria-label="Add crop and expense">
+      <article class="panel form-panel">
+        <div class="section-heading"><div><p class="eyebrow">STEP 1</p><h2 id="crop-form-heading">Add a Crop</h2></div><span class="heading-icon">🌿</span></div>
+        <p class="muted">Start a record when you sow a crop.</p>
+        <form id="crop-form" novalidate>
+          <input type="hidden" id="crop-id">
+          <label for="crop-name">Crop name <span class="required">*</span></label>
+          <input id="crop-name" name="cropName" type="text" placeholder="e.g. Soybean" minlength="2" maxlength="50" required autocomplete="off">
+          <div class="two-columns">
+            <div><label for="seed-variety">Seed / variety <span class="required">*</span></label><input id="seed-variety" name="seedVariety" type="text" placeholder="e.g. JS-335" minlength="2" maxlength="80" required></div>
+            <div><label for="sowing-date">Sowing date <span class="required">*</span></label><input id="sowing-date" name="sowingDate" type="date" required></div>
+          </div>
+          <label for="crop-area">Land area (acres) <span class="required">*</span></label>
+          <input id="crop-area" name="area" type="number" placeholder="e.g. 2.5" min="0.01" max="100000" step="0.01" required>
+          <div class="form-actions"><button id="crop-submit" class="button button-primary" type="submit">+ Save Crop</button><button id="crop-cancel" class="button button-quiet" type="button" hidden>Cancel Edit</button></div>
+          <p class="form-hint">Required fields are marked with <span class="required">*</span>. Future sowing dates and zero-area values are not accepted.</p>
+        </form>
+      </article>
+
+      <article class="panel form-panel">
+        <div class="section-heading"><div><p class="eyebrow">STEP 2</p><h2 id="expense-form-heading">Add an Expense</h2></div><span class="heading-icon">🧾</span></div>
+        <p class="muted">Record money spent on a crop.</p>
+        <form id="expense-form" novalidate>
+          <input type="hidden" id="expense-id">
+          <label for="expense-crop">Select crop <span class="required">*</span></label>
+          <select id="expense-crop" required><option value="">Add a crop first</option></select>
+          <div class="two-columns">
+            <div><label for="expense-category">Expense type <span class="required">*</span></label><select id="expense-category" required><option value="">Choose type</option><option>Seeds</option><option>Fertilizer</option><option>Pesticide</option><option>Labour</option><option>Irrigation</option><option>Transport</option><option>Other</option></select></div>
+            <div><label for="expense-date">Expense date <span class="required">*</span></label><input id="expense-date" type="date" required></div>
+          </div>
+          <label for="expense-amount">Amount (₹) <span class="required">*</span></label>
+          <input id="expense-amount" type="number" placeholder="e.g. 1250" min="0.01" max="100000000" step="0.01" required>
+          <label for="expense-note">Note (optional)</label>
+          <input id="expense-note" type="text" placeholder="e.g. Bought urea fertilizer" maxlength="200">
+          <div class="form-actions"><button id="expense-submit" class="button button-primary" type="submit">+ Save Expense</button><button id="expense-cancel" class="button button-quiet" type="button" hidden>Cancel Edit</button></div>
+          <p class="form-hint">An expense must be positive and dated on or after the crop's sowing date.</p>
+        </form>
+      </article>
+    </section>
+
+    <section class="panel crop-section">
+      <div class="section-heading section-heading-wide"><div><p class="eyebrow">YOUR FARM RECORDS</p><h2>Crop History</h2><p class="muted">Each crop keeps its own expense total and season result.</p></div><span class="count-pill" id="crop-count">0 crops</span></div>
+      <div id="crop-list" class="crop-grid"><div class="empty-state"><span>🌱</span><strong>No crop records yet</strong><p>Add your first crop using the form above.</p></div></div>
+    </section>
+
+    <section class="panel expense-section">
+      <div class="section-heading section-heading-wide"><div><p class="eyebrow">MONEY OUT</p><h2>Expense History</h2><p class="muted">Review, edit or remove an expense record.</p></div><div class="filter-wrap"><label for="expense-filter">Show</label><select id="expense-filter"><option value="all">All crops</option></select></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Crop</th><th>Type / Note</th><th>Amount</th><th>Actions</th></tr></thead>
+          <tbody id="expense-rows"><tr><td class="table-empty" colspan="5">No expenses have been added yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tip-strip"><span>💡</span><p><strong>When the season ends:</strong> choose <b>Complete Season</b> on a crop and enter the total money received from selling it. The app calculates <b>profit or loss = sale income − crop expenses</b>.</p></section>
+    <footer><span>🌱 Kisan Crop Diary</span><span>A simple student mini project · HTML, CSS, JavaScript, Express & MongoDB</span></footer>
+  </main>
+
+  <dialog id="income-dialog" class="income-dialog">
+    <form id="income-form" method="dialog" novalidate>
+      <div class="section-heading"><div><p class="eyebrow">SEASON SUMMARY</p><h2>Complete Crop Season</h2></div><button type="button" id="income-close" class="icon-button" aria-label="Close dialog">×</button></div>
+      <p id="income-crop-label" class="muted">Enter the total sale income for this crop.</p>
+      <label for="sale-income">Total sale income (₹) <span class="required">*</span></label>
+      <input id="sale-income" type="number" min="0" max="1000000000" step="0.01" placeholder="e.g. 85000" required>
+      <p class="form-hint">Enter the total amount received from selling the harvested crop. Zero is allowed if there was no sale income.</p>
+      <div class="form-actions"><button class="button button-primary" type="submit">Finish Season</button><button type="button" id="income-cancel" class="button button-quiet">Cancel</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
