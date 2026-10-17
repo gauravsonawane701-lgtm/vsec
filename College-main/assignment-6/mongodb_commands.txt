@@ -1,0 +1,76 @@
+use("collegeDB");
+
+db.createCollection("students");
+
+db.students.insertOne({
+    name: "Rahul",
+    age: 20,
+    course: "BCA",
+    marks: 85
+});
+
+db.students.insertMany([
+    {
+        name: "Amit",
+        age: 21,
+        course: "BCA",
+        marks: 78
+    },
+    {
+        name: "Priya",
+        age: 20,
+        course: "BSc",
+        marks: 92
+    },
+    {
+        name: "Sneha",
+        age: 22,
+        course: "BCA",
+        marks: 88
+    }
+]);
+
+db.students.find();
+
+db.students.findOne({ name: "Rahul" });
+
+db.students.find({ course: "BCA" });
+
+db.students.find({ marks: { $gt: 80 } });
+
+db.students.find({ marks: { $lt: 80 } });
+
+db.students.find({
+    marks: {
+        $gte: 80,
+        $lte: 90
+    }
+});
+
+db.students.updateOne(
+    { name: "Rahul" },
+    { $set: { marks: 90 } }
+);
+
+db.students.updateMany(
+    { course: "BCA" },
+    { $inc: { marks: 2 } }
+);
+
+db.students.deleteOne({ name: "Amit" });
+
+db.students.find().sort({ marks: -1 });
+
+db.students.find().limit(2);
+
+db.students.countDocuments();
+
+db.students.countDocuments({ course: "BCA" });
+
+db.students.find().sort({ marks: -1 }).limit(1);
+
+db.students.find().sort({ marks: 1 }).limit(1);
+
+db.students.createIndex({ name: 1 });
+
+db.students.getIndexes();

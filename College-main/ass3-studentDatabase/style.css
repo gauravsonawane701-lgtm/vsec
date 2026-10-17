@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+
+h1 {
+    font-size: 22px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 8px;
+}
+
+input {
+    padding: 5px;
+    margin-top: 3px;
+}
+
+button {
+    margin-top: 12px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: left;
+}
+
+.topper-row {
+    background-color: #fff8dc;
+}
+
+.stamp {
+    color: red;
+    border: 1px solid red;
+    padding: 1px 4px;
+    font-size: 12px;
+}
+
+.topper-banner {
+    display: none;
+    color: red;
+    margin-bottom: 10px;
+}
+
+.empty-note {
+    color: #666;
+}
